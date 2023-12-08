@@ -7,5 +7,14 @@
 
 import Foundation
 
-print("Hello, World!")
+var days: [Day] = [
+    Day7(dayNum: 7, part1Test: false, part2Test: false),
+]
 
+for day in days {
+    print("Running Day \(day.DayNum):")
+    day.RunDay()
+    print("==========================")
+}
+
+//RunTests()
