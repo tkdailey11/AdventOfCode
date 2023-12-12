@@ -2,10 +2,10 @@ import Foundation
 import Tools
 
 final class Day04Solver: DaySolver {
-	let dayNumber: Int = 4
+    let dayNumber: Int = 4
 
     let expectedPart1Result = 21919
-    let expectedPart2Result = 9881048
+    let expectedPart2Result = 9_881_048
 
     private var input: Input!
 
@@ -19,7 +19,7 @@ final class Day04Solver: DaySolver {
         0
     }
 
-    func parseInput(rawString: String) {
+    func parseInput(rawString _: String) {
         input = .init()
     }
 }

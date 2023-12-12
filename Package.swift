@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.9
 
 import Foundation
 import PackageDescription
@@ -8,7 +8,7 @@ import PackageDescription
 var package = Package(
 	name: "AdventOfCode",
 	platforms: [
-		.macOS(.v12),
+        .macOS(.v14),
 	],
 	products: [
 		.library(name: "Tools", targets: ["Tools"]),
@@ -17,7 +17,6 @@ var package = Package(
 	],
 	dependencies: [
 		.package(url: "https://github.com/apple/swift-collections.git", .upToNextMajor(from: "1.0.0")),
-		.package(url: "https://github.com/mkrd/Swift-BigInt.git", branch: "master"),
 		.package(url: "https://github.com/rbruinier/SwiftMicroPNG", branch: "main"),
 		.package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.50.4")
 	],

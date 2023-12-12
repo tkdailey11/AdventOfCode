@@ -2,97 +2,103 @@ import Foundation
 import Tools
 
 final class Day11Solver: DaySolver {
-	let dayNumber: Int = 11
+    let dayNumber: Int = 11
 
-	let expectedPart1Result = 0
-	let expectedPart2Result = 0
+    let expectedPart1Result = 9370588
+    let expectedPart2Result = 746207878188
 
-	private var input: Input!
-    
-    private struct GalaxyRow {
-        var points: [GalaxyPoint]
-        var yVal: Int
-    }
-    
-    private struct GalaxyCol {
-        var points: [GalaxyPoint]
-        var xVal: Int
-    }
-    
-    private struct GalaxyPoint {
-        var point: Point2D
-        var isGalaxy: Bool
+    private var input: Input!
+
+    private struct Input {
+        var galaxies: Set<Point2D>
     }
 
-	private struct Input {
-        var points: [GalaxyPoint]
-    }
+    private func expandColumns(in galaxies: Set<Point2D>, scale: Int) -> Set<Point2D> {
+        var newGalaxies: Set<Point2D> = []
 
-	func solvePart1() -> Int {
-		0
-	}
+            let maxX = galaxies.map(\.x).max()!
 
-	func solvePart2() -> Int {
-		0
-	}
+            var newX = 0
+            for x in 0 ... maxX {
+                let existingGalaxiesOnColumn = galaxies.filter { $0.x == x }
 
-	func parseInput(rawString: String) {
-        let lines = rawString.allLines().map { $0.components(separatedBy: "") }
-        var rows: [[GalaxyPoint]] = []
-        var colHasGalaxy: [Bool] = []
-        
-        for i in 0 ..< lines[0].count {
-            colHasGalaxy[i] = false
-        }
-        
-        for i in 0 ..< lines.count {
-            var row: [GalaxyPoint] = []
-            var foundGalaxy = false
-            for j in 0 ..< lines[i].count {
-                let isGalaxy = lines[i][j] == "#"
-                if isGalaxy {
-                    foundGalaxy = true
-                    colHasGalaxy[j] = true
-                }
-                let point = GalaxyPoint(point: Point2D(x: j, y: i), isGalaxy: isGalaxy)
-                row.append(point)
-            }
-            rows.append(row)
-            if !foundGalaxy {
-                var newRow: [GalaxyPoint] = []
-                for j in 0 ..< row.count {
-                    let point = GalaxyPoint(point: Point2D(x: j, y: i), isGalaxy: false)
-                    newRow.append(point)
-                }
-                rows.append(newRow)
-            }
-        }
-        
-        var rowLength = rows[0].count + colHasGalaxy.filter{ $0 }.count
-        var newRows: [[GalaxyPoint]] = []
-        var offset = 0
-        for i in 0 ..< rows.count {
-            var newRow: [GalaxyPoint] = []
-            for j in 0 ..< rowLength {
-                let pt = rows[i][j]
-                newRow.append(GalaxyPoint(point: Point2D(x: pt.point.x + offset, y: pt.point.y), isGalaxy: pt.isGalaxy))
-                if colHasGalaxy[j] {
-                    newRow.append(GalaxyPoint(point: Point2D(x: pt.point.x + offset + 1, y: pt.point.y), isGalaxy: pt.isGalaxy))
-                    offset += 1
+                if existingGalaxiesOnColumn.isEmpty {
+                    newX += scale
+                } else {
+                    newGalaxies = newGalaxies.union(existingGalaxiesOnColumn.map { .init(x: newX, y: $0.y) })
+
+                    newX += 1
                 }
             }
-        }
-        
-        
-        input = .init(points: newRows.flatMap{ $0 })
-	}
-    
-    private func isColEmptySpace(index: Int, rows: [[GalaxyPoint]]) -> Bool {
-        for i in 0 ..< input.points.count {
-            if rows[i][index].isGalaxy {
-                return false
+
+            return newGalaxies
+    }
+
+    private func expandRows(in galaxies: Set<Point2D>, scale: Int) -> Set<Point2D> {
+        var newGalaxies: Set<Point2D> = []
+
+                let maxY = galaxies.map(\.y).max()!
+
+                var newY = 0
+                for y in 0 ... maxY {
+                    let existingGalaxiesOnRow = galaxies.filter { $0.y == y }
+
+                    if existingGalaxiesOnRow.isEmpty {
+                        newY += scale
+                    } else {
+                        newGalaxies = newGalaxies.union(existingGalaxiesOnRow.map { .init(x: $0.x, y: newY) })
+
+                        newY += 1
+                    }
+                }
+
+                return newGalaxies
+    }
+
+    private func calculateTotalDistanceWith(_ originalGalaxies: Set<Point2D>, scale: Int) -> Int {
+//        var expanded = expandColumns(in: input.galaxies, scale: scale)
+//        expanded = expandRows(in: expanded, scale: scale)
+//
+//        return expanded
+//            .compactMap { galaxy in
+//                expanded.remove(galaxy)
+//                return expanded.map { galaxy.manhattanDistance(from: $0) }
+//            }
+//            .flatMap { $0 }
+//            .reduce(0) { $0 + $1 }
+        var expandedGalaxies = expandColumns(in: originalGalaxies, scale: scale)
+        expandedGalaxies = expandRows(in: expandedGalaxies, scale: scale)
+
+        let galaxies = Array(expandedGalaxies)
+
+        var sum = 0
+        for i in 0 ..< galaxies.count {
+            for j in i + 1 ..< galaxies.count {
+                sum += galaxies[i].manhattanDistance(from: galaxies[j])
             }
         }
-        return true
+
+        return sum
+    }
+    
+    func solvePart1() -> Int {
+        calculateTotalDistanceWith(input.galaxies, scale: 2)
+    }
+
+    func solvePart2() -> Int {
+        calculateTotalDistanceWith(input.galaxies, scale: 1_000_000)
+    }
+
+    func parseInput(rawString: String) {
+        var galaxies: Set<Point2D> = Set()
+        rawString.allLines().enumerated().forEach { y, line in
+            line.enumerated().forEach { x, char in
+                if char == "#" {
+                    galaxies.insert(Point2D(x: x, y: y))
+                }
+            }
+        }
+
+        input = .init(galaxies: galaxies)
     }
 }

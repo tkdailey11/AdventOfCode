@@ -1,143 +1,143 @@
 public enum Dijkstra {}
 
 public extension Dijkstra {
-	struct ShortestPathInWeightedGraphResult {
-		/// The full path from point A to point B.
-		public let pathIndices: [WeightedGraph.ElementIndex]
+    struct ShortestPathInWeightedGraphResult {
+        /// The full path from point A to point B.
+        public let pathIndices: [WeightedGraph.ElementIndex]
 
-		public let weight: Int
-	}
+        public let weight: Int
+    }
 
-	struct ShortestPathInUnweightedGraphResult {
-		/// The full path from point A to point B.
-		public let pathIndices: [UnweightedGraph.ElementIndex]
+    struct ShortestPathInUnweightedGraphResult {
+        /// The full path from point A to point B.
+        public let pathIndices: [UnweightedGraph.ElementIndex]
 
-		/// The total number of steps required to get from point A to point B in the grid.
-		public var steps: Int {
-			pathIndices.count - 1
-		}
-	}
+        /// The total number of steps required to get from point A to point B in the grid.
+        public var steps: Int {
+            pathIndices.count - 1
+        }
+    }
 
-	private struct PathSegment {
-		let a: WeightedGraph.ElementIndex
-		let b: WeightedGraph.ElementIndex
+    private struct PathSegment {
+        let a: WeightedGraph.ElementIndex
+        let b: WeightedGraph.ElementIndex
 
-		let weight: WeightedGraph.Weight
+        let weight: WeightedGraph.Weight
 
-		let combinedWeight: WeightedGraph.Weight
-	}
+        let combinedWeight: WeightedGraph.Weight
+    }
 
-	private struct Node: Comparable {
-		let index: WeightedGraph.ElementIndex
-		let weight: WeightedGraph.Weight
+    private struct Node: Comparable {
+        let index: WeightedGraph.ElementIndex
+        let weight: WeightedGraph.Weight
 
-		static func < (lhs: Node, rhs: Node) -> Bool {
-			lhs.weight < rhs.weight
-		}
-	}
+        static func < (lhs: Node, rhs: Node) -> Bool {
+            lhs.weight < rhs.weight
+        }
+    }
 
-	static func shortestPathInGraph(_ graph: WeightedGraph, from a: Int, to b: Int) -> ShortestPathInWeightedGraphResult? {
-		var weights: [WeightedGraph.Weight?] = .init(repeating: nil, count: graph.count)
-		var pathsByIndex: [WeightedGraph.ElementIndex: PathSegment] = [:]
+    static func shortestPathInGraph(_ graph: WeightedGraph, from a: Int, to b: Int) -> ShortestPathInWeightedGraphResult? {
+        var weights: [WeightedGraph.Weight?] = .init(repeating: nil, count: graph.count)
+        var pathsByIndex: [WeightedGraph.ElementIndex: PathSegment] = [:]
 
-		weights[a] = 0
+        weights[a] = 0
 
-		var priorityQueue = PriorityQueue<Node>(isAscending: true)
+        var priorityQueue = PriorityQueue<Node>(isAscending: true)
 
-		priorityQueue.push(.init(index: a, weight: 0))
+        priorityQueue.push(.init(index: a, weight: 0))
 
-		queueLoop: while let node = priorityQueue.pop() {
-			guard let weight = weights[node.index] else {
-				preconditionFailure()
-			}
+        queueLoop: while let node = priorityQueue.pop() {
+            guard let weight = weights[node.index] else {
+                preconditionFailure()
+            }
 
-			if node.index == b {
-				break queueLoop
-			}
+            if node.index == b {
+                break queueLoop
+            }
 
-			for edge in graph.directionalEdges(from: node.index) {
-				let oldWeight = weights[edge.b]
+            for edge in graph.directionalEdges(from: node.index) {
+                let oldWeight = weights[edge.b]
 
-				let combinedWeight = edge.weight + weight
+                let combinedWeight = edge.weight + weight
 
-				if oldWeight == nil || combinedWeight < oldWeight! {
-					weights[edge.b] = combinedWeight
-					pathsByIndex[edge.b] = .init(a: edge.a, b: edge.b, weight: edge.weight, combinedWeight: combinedWeight)
+                if oldWeight == nil || combinedWeight < oldWeight! {
+                    weights[edge.b] = combinedWeight
+                    pathsByIndex[edge.b] = .init(a: edge.a, b: edge.b, weight: edge.weight, combinedWeight: combinedWeight)
 
-					priorityQueue.push(.init(index: edge.b, weight: combinedWeight))
-				}
-			}
-		}
+                    priorityQueue.push(.init(index: edge.b, weight: combinedWeight))
+                }
+            }
+        }
 
-		let lastSegment = pathsByIndex.values.first { $0.b == b }!
+        let lastSegment = pathsByIndex.values.first { $0.b == b }!
 
-		var path: [PathSegment] = []
+        var path: [PathSegment] = []
 
-		var currentIndex = lastSegment.b
+        var currentIndex = lastSegment.b
 
-		while let pathSegment = pathsByIndex.values.first(where: { $0.b == currentIndex }) {
-			path.append(pathSegment)
+        while let pathSegment = pathsByIndex.values.first(where: { $0.b == currentIndex }) {
+            path.append(pathSegment)
 
-			currentIndex = pathSegment.a
-		}
+            currentIndex = pathSegment.a
+        }
 
-		path.reverse()
+        path.reverse()
 
-		return .init(
-			pathIndices: [a] + path.map(\.b),
-			weight: lastSegment.combinedWeight
-		)
-	}
+        return .init(
+            pathIndices: [a] + path.map(\.b),
+            weight: lastSegment.combinedWeight
+        )
+    }
 
-	static func shortestPathInGraph(_ graph: UnweightedGraph, from a: Int, to b: Int) -> ShortestPathInUnweightedGraphResult? {
-		var weights: [WeightedGraph.Weight?] = .init(repeating: nil, count: graph.count)
-		var pathsByIndex: [WeightedGraph.ElementIndex: PathSegment] = [:]
+    static func shortestPathInGraph(_ graph: UnweightedGraph, from a: Int, to b: Int) -> ShortestPathInUnweightedGraphResult? {
+        var weights: [WeightedGraph.Weight?] = .init(repeating: nil, count: graph.count)
+        var pathsByIndex: [WeightedGraph.ElementIndex: PathSegment] = [:]
 
-		weights[a] = 0
+        weights[a] = 0
 
-		var priorityQueue = PriorityQueue<Node>(isAscending: true)
+        var priorityQueue = PriorityQueue<Node>(isAscending: true)
 
-		priorityQueue.push(.init(index: a, weight: 0))
+        priorityQueue.push(.init(index: a, weight: 0))
 
-		queueLoop: while let node = priorityQueue.pop() {
-			guard let weight = weights[node.index] else {
-				preconditionFailure()
-			}
+        queueLoop: while let node = priorityQueue.pop() {
+            guard let weight = weights[node.index] else {
+                preconditionFailure()
+            }
 
-			if node.index == b {
-				break queueLoop
-			}
+            if node.index == b {
+                break queueLoop
+            }
 
-			for edge in graph.directionalEdges(from: node.index) {
-				let oldWeight = weights[edge.b]
+            for edge in graph.directionalEdges(from: node.index) {
+                let oldWeight = weights[edge.b]
 
-				let combinedWeight = 1 + weight
+                let combinedWeight = 1 + weight
 
-				if oldWeight == nil || combinedWeight < oldWeight! {
-					weights[edge.b] = combinedWeight
-					pathsByIndex[edge.b] = .init(a: edge.a, b: edge.b, weight: 1, combinedWeight: combinedWeight)
+                if oldWeight == nil || combinedWeight < oldWeight! {
+                    weights[edge.b] = combinedWeight
+                    pathsByIndex[edge.b] = .init(a: edge.a, b: edge.b, weight: 1, combinedWeight: combinedWeight)
 
-					priorityQueue.push(.init(index: edge.b, weight: combinedWeight))
-				}
-			}
-		}
+                    priorityQueue.push(.init(index: edge.b, weight: combinedWeight))
+                }
+            }
+        }
 
-		let lastSegment = pathsByIndex.values.first { $0.b == b }!
+        let lastSegment = pathsByIndex.values.first { $0.b == b }!
 
-		var path: [PathSegment] = []
+        var path: [PathSegment] = []
 
-		var currentIndex = lastSegment.b
+        var currentIndex = lastSegment.b
 
-		while let pathSegment = pathsByIndex.values.first(where: { $0.b == currentIndex }) {
-			path.append(pathSegment)
+        while let pathSegment = pathsByIndex.values.first(where: { $0.b == currentIndex }) {
+            path.append(pathSegment)
 
-			currentIndex = pathSegment.a
-		}
+            currentIndex = pathSegment.a
+        }
 
-		path.reverse()
+        path.reverse()
 
-		return .init(
-			pathIndices: [a] + path.map(\.b)
-		)
-	}
+        return .init(
+            pathIndices: [a] + path.map(\.b)
+        )
+    }
 }

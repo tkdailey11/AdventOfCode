@@ -2,10 +2,10 @@ import Foundation
 import Tools
 
 final class Day08Solver: DaySolver {
-	let dayNumber: Int = 8
+    let dayNumber: Int = 8
 
     let expectedPart1Result = 14681
-    let expectedPart2Result = 14321394058031
+    let expectedPart2Result = 14_321_394_058_031
 
     private var input: Input!
 
@@ -56,12 +56,12 @@ final class Day08Solver: DaySolver {
 
     func solvePart2() -> Int {
         var nodes: [String] = input.nodes.keys.filter { $0.hasSuffix("A") }
-        
+
         let counts = nodes.map {
             var currLabel = $0
             var currIdx = 0
             var steps = 0
-            
+
             while !currLabel.hasSuffix("Z") {
                 defer {
                     currIdx = (currIdx + 1) % input.instructions.count
@@ -75,10 +75,10 @@ final class Day08Solver: DaySolver {
                 case .right: currLabel = leftRight.right
                 }
             }
-            
+
             return steps
         }
-        
+
         return Math.leastCommonMultiple(for: counts)
     }
 
