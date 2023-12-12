@@ -129,3 +129,24 @@ public extension Array where Element: Comparable {
         return false
     }
 }
+
+public extension Array {
+    func from(index: Int) -> Array<Element>? {
+        if index > self.count - 1  || index < 0 {
+            return nil
+        }
+        var temp: Array<Element> = Array.init(reservedCapacity: self.count - index)
+        for i in index ..< self.count {
+            temp.append(self[i])
+        }
+        return temp
+    }
+    
+    mutating func expandBy(multiplier: Int, joinedBy: [Element] = []) {
+        let elems = self
+        for i in 1 ..< multiplier {
+            self.append(contentsOf: joinedBy)
+            self.append(contentsOf: elems)
+        }
+    }
+}
