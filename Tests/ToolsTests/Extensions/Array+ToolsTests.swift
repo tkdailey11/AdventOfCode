@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Array+ToolsTest.swift
 //  
 //
 //  Created by Tyler Dailey on 12/12/23.
@@ -32,5 +32,13 @@ final class ArrayExtensionsTests: XCTestCase {
         let join = [0,0]
         b.expandBy(multiplier: 3, joinedBy: join)
         XCTAssertEqual(b.count, origCount * 3 + join.count * 2)
+    }
+    
+    func testWithValueReplacedAt() {
+        let a = [1, 2, 3]
+        let b = a.withValueReplacedAt(index: 1, newElement: 0)
+        
+        XCTAssert(a.elementsEqual([1, 2, 3]))
+        XCTAssert(b.elementsEqual([1, 0, 3]))
     }
 }

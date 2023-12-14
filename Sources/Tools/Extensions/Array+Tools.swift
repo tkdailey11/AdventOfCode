@@ -149,4 +149,16 @@ public extension Array {
             self.append(contentsOf: elems)
         }
     }
+    
+    func withValueReplacedAt(index: Int, newElement: Element) -> [Element] {
+        var n: [Element] = []
+        self.enumerated().forEach{ i, v in
+            if i == index {
+                n.append(newElement)
+            } else {
+                n.append(self[i])
+            }
+        }
+        return n
+    }
 }
