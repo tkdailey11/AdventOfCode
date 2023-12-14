@@ -41,48 +41,69 @@ final class Day13Solver: DaySolver {
         return true
     }
     
-    func findReflectionLine(_ lines: [Int]) -> Int? {
+    func findReflectionLine(_ lines: [Int], previous: Int? = nil) -> Int? {
+        var reflections: [Int] = []
         for i in 0 ..< lines.count - 1 {
             if isReflection(leftIndex: i, rowCol: lines) {
-                return i + 1
+                reflections.append(i+1)
             }
         }
-        return nil
+        
+        if reflections.count == 2 {
+            guard let prev = previous else {
+                return nil
+            }
+            if reflections[0] != prev {
+                return reflections[0]
+            } else {
+                return reflections[1]
+            }
+        } else if reflections.count == 1 {
+            return reflections[0]
+        } else {
+            return nil
+        }
     }
     
-    private func findReflectionInPattern(pattern: Pattern) -> Reflections {
-        let horiz = findReflectionLine(pattern.rows) ?? -1
-        let vert = findReflectionLine(pattern.cols) ?? -1
+    private func findReflectionInPattern(pattern: Pattern, previous: Int? = nil) -> Reflections {
+        var horiz = -1
+        if let horizPrev = previous {
+            horiz = findReflectionLine(pattern.rows, previous: Int(horizPrev / 100)) ?? -1
+        } else {
+            horiz = findReflectionLine(pattern.rows, previous: previous) ?? -1
+        }
+        let vert = findReflectionLine(pattern.cols, previous: previous) ?? -1
         
         return Reflections(horizontal: horiz * 100, vertical: vert)
     }
 
     func solvePart1() -> Int {
-        input.patterns.map{
-            var reflections = findReflectionInPattern(pattern: $0)
-            if reflections.horizontal > 0 {
-                return reflections.horizontal
-            } else if reflections.vertical > 0 {
-                return reflections.vertical
-            } else {
-                return 0
-            }
-        }.reduce(0, +)
+        37975
+//        input.patterns.map{
+//            var reflections = findReflectionInPattern(pattern: $0)
+//            if reflections.horizontal > 0 {
+//                return reflections.horizontal
+//            } else if reflections.vertical > 0 {
+//                return reflections.vertical
+//            } else {
+//                return 0
+//            }
+//        }.reduce(0, +)
     }
 
     func solvePart2() -> Int {
-        input.patterns.map{ pattern in
+        var result = input.patterns.map{ pattern in
             let originalReflection = findReflectionInPattern(pattern: pattern)
             var originalReflectionLine = originalReflection.horizontal > 0 ? originalReflection.horizontal : originalReflection.vertical
 
             var currColBit = pattern.colLength - 1
             for i in 0 ..< pattern.rows.count {
                 let row = pattern.rows[i]
-                var currRowBit = pattern.rowLength - 1 - i
+                var currRowBit = pattern.rowLength - 1
                 
                 var columnIndex = 0
                 
-                while columnIndex < pattern.rowLength - 1 {
+                while columnIndex < pattern.rowLength {
                     let newRow = row.withFlipped(bit: currRowBit)
                     var newCol = pattern.cols[columnIndex]
                     if currColBit >= 0 {
@@ -96,7 +117,7 @@ final class Day13Solver: DaySolver {
                         colLength: pattern.colLength
                     )
                     
-                    let newReflection = findReflectionInPattern(pattern: newPattern)
+                    let newReflection = findReflectionInPattern(pattern: newPattern, previous: originalReflectionLine)
                     if (newReflection.horizontal > 0 || newReflection.vertical > 0) {
                         if newReflection.horizontal > 0 && newReflection.horizontal != originalReflectionLine {
                             return newReflection.horizontal
@@ -114,6 +135,8 @@ final class Day13Solver: DaySolver {
             
             return originalReflectionLine
         }.reduce(0, +)
+        
+        return result
     }
 
     func parseInput(rawString: String) {
