@@ -1,5 +1,10 @@
 import Foundation
 
+public struct LabeledPoint2D {
+    public var point: Point2D
+    public var direction: Direction
+}
+
 public struct Point2D: Hashable, Equatable {
     public enum Degrees: Int {
         case zero = 0
@@ -97,6 +102,28 @@ public struct Point2D: Hashable, Equatable {
                 moved(to: .east),
                 moved(to: .south),
                 moved(to: .west),
+            ]
+        }
+    }
+    
+    public func labeledNeighbors(includingDiagonals: Bool = false) -> [LabeledPoint2D] {
+        if includingDiagonals {
+            [
+                LabeledPoint2D(point: moved(to: .north), direction: .north),
+                LabeledPoint2D(point: moved(to: .east),direction: .east),
+                LabeledPoint2D(point: moved(to: .south),direction: .south),
+                LabeledPoint2D(point: moved(to: .west),direction: .west),
+                LabeledPoint2D(point: moved(to: .northWest),direction: .northWest),
+                LabeledPoint2D(point: moved(to: .northEast),direction: .northEast),
+                LabeledPoint2D(point: moved(to: .southWest),direction: .southWest),
+                LabeledPoint2D(point: moved(to: .southEast),direction: .southEast),
+            ]
+        } else {
+            [
+                LabeledPoint2D(point: moved(to: .north), direction: .north),
+                LabeledPoint2D(point: moved(to: .east),direction: .east),
+                LabeledPoint2D(point: moved(to: .south),direction: .south),
+                LabeledPoint2D(point: moved(to: .west),direction: .west),
             ]
         }
     }

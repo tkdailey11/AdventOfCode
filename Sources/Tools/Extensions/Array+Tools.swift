@@ -144,7 +144,7 @@ public extension Array {
     
     mutating func expandBy(multiplier: Int, joinedBy: [Element] = []) {
         let elems = self
-        for i in 1 ..< multiplier {
+        for _ in 1 ..< multiplier {
             self.append(contentsOf: joinedBy)
             self.append(contentsOf: elems)
         }

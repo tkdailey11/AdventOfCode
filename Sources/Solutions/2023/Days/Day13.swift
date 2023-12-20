@@ -59,7 +59,7 @@ final class Day13Solver: DaySolver {
 
     func solvePart1() -> Int {
         input.patterns.map{
-            var reflections = findReflectionInPattern(pattern: $0)
+            let reflections = findReflectionInPattern(pattern: $0)
             if reflections.horizontal > 0 {
                 return reflections.horizontal
             } else if reflections.vertical > 0 {
@@ -73,7 +73,7 @@ final class Day13Solver: DaySolver {
     func solvePart2() -> Int {
         input.patterns.map{ pattern in
             let originalReflection = findReflectionInPattern(pattern: pattern)
-            var originalReflectionLine = originalReflection.horizontal > 0 ? originalReflection.horizontal : originalReflection.vertical
+            let originalReflectionLine = originalReflection.horizontal > 0 ? originalReflection.horizontal : originalReflection.vertical
 
             var currColBit = pattern.colLength - 1
             for i in 0 ..< pattern.rows.count {
