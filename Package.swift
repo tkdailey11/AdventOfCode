@@ -18,7 +18,8 @@ var package = Package(
 	dependencies: [
 		.package(url: "https://github.com/apple/swift-collections.git", .upToNextMajor(from: "1.0.0")),
 		.package(url: "https://github.com/rbruinier/SwiftMicroPNG", branch: "main"),
-		.package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.50.4")
+		.package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.50.4"),
+        .package(url: "https://github.com/davecom/SwiftGraph", .upToNextMajor(from: "3.1.0")),
 	],
 	targets: [
 		.target(
@@ -48,6 +49,7 @@ var package = Package(
 			name: "Solutions2023",
 			dependencies: [
 				"Tools",
+                .product(name: "SwiftGraph", package: "SwiftGraph")
 			],
 			path: "Sources/Solutions/2023",
 			resources: [

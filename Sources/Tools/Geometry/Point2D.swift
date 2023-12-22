@@ -62,15 +62,6 @@ public struct Point2D: Hashable, Equatable {
         }
     }
 
-    //    public func moved(to direction: Direction, steps: Int = 1) -> Point2D {
-    //        switch direction {
-    //        case .north: return self + .init(x: 0, y: -steps)
-    //        case .south: return self + .init(x: 0, y: steps)
-    //        case .east: return self + .init(x: steps, y: 0)
-    //        case .west: return self + .init(x: -steps, y: 0)
-    //        }
-    //    }
-
     public func moved(to direction: Direction, steps: Int = 1) -> Point2D {
         switch direction {
         case .north: self + .init(x: 0, y: -steps)
