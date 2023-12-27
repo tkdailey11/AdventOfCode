@@ -19,7 +19,7 @@ let days: [any DaySolver] = [
     //	Day07Solver(),
     //	Day08Solver(),
     //	Day09Solver(),
-    //	Day10Solver(),
+//    	Day10Solver(),
 //    Day11Solver(),
 //    	Day12Solver(),
 //    	Day13Solver(),
@@ -29,12 +29,12 @@ let days: [any DaySolver] = [
     //	Day17Solver(),
 //    	Day18Solver(),
 //    	Day19Solver(),
-    	Day20Solver(),
+//    	Day20Solver(),
 //    	Day21Solver(),
     //	Day22Solver(),
     //	Day23Solver(),
     //	Day24Solver(),
-    //	Day25Solver(),
+    	Day25Solver(),
 ]
 
 solveDays(days, bundle: .module)

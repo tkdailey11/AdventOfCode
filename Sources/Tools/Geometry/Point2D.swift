@@ -5,7 +5,7 @@ public struct LabeledPoint2D {
     public var direction: Direction
 }
 
-public struct Point2D: Hashable, Equatable {
+public struct Point2D: Hashable, Equatable, Codable {
     public enum Degrees: Int {
         case zero = 0
         case ninety = 90

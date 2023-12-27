@@ -146,22 +146,22 @@ public extension BFS {
 }
 
 public extension BFS {
-    struct ShortestPathInUnweightedGraphResult {
+    struct ShortestPathInUnweightedGraphResult<Element: Hashable> {
         /// The full path from point A to point B.
-        public let pathIndices: [UnweightedGraph.ElementIndex]
+        public let pathVertices: [Element]
 
         /// The total number of steps required to get from point A to point B in the grid.
         public var steps: Int {
-            pathIndices.count - 1
+            pathVertices.count - 1
         }
     }
 
-    private struct ShortestPathInUnweightedGraphQueueNode {
-        let index: Int
-        let visitedIndices: [UnweightedGraph.ElementIndex]
+    private struct ShortestPathInUnweightedGraphQueueNode<Element: Hashable> {
+        let vertex: Element
+        let visitedVertices: [Element]
 
         var steps: Int {
-            visitedIndices.count - 1
+            visitedVertices.count - 1
         }
     }
 
@@ -171,31 +171,31 @@ public extension BFS {
     ///   - pointA: Starting point in the grid. Should be an accessible grid point.
     ///   - pointB: End point in the grid. Should be an accessible grid point.
     /// - Returns: The solution when available.
-    static func shortestPathInGraph(_ graph: UnweightedGraph, from a: Int, to b: Int) -> ShortestPathInUnweightedGraphResult? {
+    static func shortestPathInGraph<Element: Hashable>(_ graph: UGraph<Element>, from a: Element, to b: Element) -> ShortestPathInUnweightedGraphResult<Element>? {
         var solutionQueue: Deque<ShortestPathInUnweightedGraphQueueNode> = [
-            .init(index: a, visitedIndices: [a]),
+            .init(vertex: a, visitedVertices: [a]),
         ]
 
-        var bestSolution: ShortestPathInUnweightedGraphQueueNode?
+        var bestSolution: ShortestPathInUnweightedGraphQueueNode<Element>?
 
-        var visitedPoints: Set<Int> = [a]
+        var visitedVertices: Set<Element> = [a]
 
         while let solution = solutionQueue.popFirst() {
-            if solution.index == b {
+            if solution.vertex == b {
                 bestSolution = solution
 
                 break
             }
 
-            let edges = graph.directionalEdges(from: solution.index)
+            let edges = graph.edges(from: solution.vertex)
 
-            for edge in edges where visitedPoints.contains(edge.b) == false {
-                visitedPoints.insert(edge.b)
+            for edge in edges where visitedVertices.contains(edge.b) == false {
+                visitedVertices.insert(edge.b)
 
                 solutionQueue.append(
                     .init(
-                        index: edge.b,
-                        visitedIndices: solution.visitedIndices + [edge.b]
+                        vertex: edge.b,
+                        visitedVertices: solution.visitedVertices + [edge.b]
                     )
                 )
             }
@@ -205,7 +205,7 @@ public extension BFS {
             return nil
         }
 
-        return .init(pathIndices: bestSolution.visitedIndices)
+        return .init(pathVertices: bestSolution.visitedVertices)
     }
 }
 
