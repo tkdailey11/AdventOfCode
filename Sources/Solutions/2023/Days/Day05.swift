@@ -2,12 +2,12 @@ import Collections
 import Foundation
 import Tools
 
-/*
- First solved part 2 brute-force and that took 90 seconds. Nice to have the correct answer but performance is also important
- so instead I built a solver based on finding overlapping ranges, recursively down the layers.
- */
 final class Day05Solver: DaySolver {
     let dayNumber: Int = 5
+    
+    let useSampleInput: Bool = false
+    let expectedPart1SampleResult = 0
+    let expectedPart2SampleResult = 0
 
     let expectedPart1Result = 910_845_529
     let expectedPart2Result = 77_435_348

@@ -4,6 +4,10 @@ import Collections
 
 final class Day19Solver: DaySolver {
     let dayNumber: Int = 19
+    
+    let useSampleInput: Bool = false
+    let expectedPart1SampleResult = 0
+    let expectedPart2SampleResult = 0
 
     // 382440
     let expectedPart1Result = 19114

@@ -9,6 +9,10 @@ import Tools
 
 final class Day17Solver: DaySolver {
     let dayNumber: Int = 17
+    
+    let useSampleInput: Bool = false
+    let expectedPart1SampleResult = 0
+    let expectedPart2SampleResult = 0
 
     let expectedPart1Result = 102
     let expectedPart2Result = 94

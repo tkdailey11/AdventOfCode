@@ -3,13 +3,16 @@ import Foundation
 
 public protocol DaySolver {
     associatedtype Part1Result: Equatable
+    var expectedPart1Result: Part1Result { get }
+    var expectedPart1SampleResult: Part1Result { get }
+    
     associatedtype Part2Result: Equatable
+    var expectedPart2Result: Part2Result { get }
+    var expectedPart2SampleResult: Part2Result { get }
 
     var dayNumber: Int { get }
     var year: Int { get }
-
-    var expectedPart1Result: Part1Result { get }
-    var expectedPart2Result: Part2Result { get }
+    var useSampleInput: Bool { get }
 
     func parseInput(rawString: String)
 
@@ -60,6 +63,7 @@ private func solveDay(_ solver: any DaySolver) -> Result {
         print(" -> ⛔️ part 1 expected result is: \(solver.expectedPart1Result).")
     }
 
+
     // part 2
     startTime = mach_absolute_time()
 
@@ -83,7 +87,7 @@ public func solveDays(_ days: [any DaySolver], bundle: Bundle) {
     print("Parsing inputs")
 
     days.forEach { day in
-        day.parseInput(rawString: getRawInputStringFor(day: day.dayNumber, in: bundle))
+        day.parseInput(rawString: getRawInputStringFor(day: day.dayNumber, in: bundle, useSampleInput: day.useSampleInput))
     }
 
     print("Start solving days")

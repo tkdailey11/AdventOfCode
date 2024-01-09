@@ -4,6 +4,10 @@ import Tools
 final class Day15Solver: DaySolver {
     let dayNumber: Int = 15
 
+    let useSampleInput: Bool = false
+    let expectedPart1SampleResult = 0
+    let expectedPart2SampleResult = 0
+    
     let expectedPart1Result = 505427
     let expectedPart2Result = 0
 

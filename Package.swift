@@ -13,6 +13,7 @@ var package = Package(
 	products: [
 		.library(name: "Tools", targets: ["Tools"]),
 		.executable(name: "VisualizerTestApp", targets: ["VisualizerTestApp"]),
+        .executable(name: "Template", targets: ["Template"]),
 		.executable(name: "Solutions2023", targets: ["Solutions2023"]),
 	],
 	dependencies: [
@@ -54,7 +55,19 @@ var package = Package(
 			path: "Sources/Solutions/2023",
 			resources: [
 				.copy("Input"),
+                .copy("Sample")
 			]
 		),
+        .executableTarget(
+            name: "Template",
+            dependencies: [
+                "Tools",
+            ],
+            path: "Sources/Solutions/_template",
+            resources: [
+                .copy("Input"),
+                .copy("Sample")
+            ]
+        ),
 	]
 )

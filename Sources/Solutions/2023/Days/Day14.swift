@@ -3,6 +3,10 @@ import Tools
 
 final class Day14Solver: DaySolver {
     let dayNumber: Int = 14
+    
+    let useSampleInput: Bool = false
+    let expectedPart1SampleResult = 0
+    let expectedPart2SampleResult = 0
 
     //113424
     let expectedPart1Result = 113424

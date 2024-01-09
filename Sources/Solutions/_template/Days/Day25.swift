@@ -3,6 +3,10 @@ import Tools
 
 final class Day25Solver: DaySolver {
     let dayNumber: Int = 25
+    
+    let useSampleInput: Bool = false
+    let expectedPart1SampleResult = 0
+    let expectedPart2SampleResult = "Merry Christmas 🎄"
 
 	let expectedPart1Result = 0
 	let expectedPart2Result = "Merry Christmas 🎄"

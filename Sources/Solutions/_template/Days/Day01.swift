@@ -3,9 +3,13 @@ import Tools
 
 final class Day01Solver: DaySolver {
     let dayNumber: Int = 1
+    
+    let useSampleInput: Bool = false
+    let expectedPart1SampleResult = 0
+    let expectedPart2SampleResult = 0
 
-	let expectedPart1Result = 0
-	let expectedPart2Result = 0
+    let expectedPart1Result = 0
+    let expectedPart2Result = 0
 
 	private var input: Input!
 	

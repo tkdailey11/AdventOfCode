@@ -4,6 +4,10 @@ import Collections
 
 final class Day10Solver: DaySolver {
     let dayNumber: Int = 10
+    
+    let useSampleInput: Bool = false
+    let expectedPart1SampleResult = 0
+    let expectedPart2SampleResult = 0
 
     private enum TileType: String {
         case start = "S"
