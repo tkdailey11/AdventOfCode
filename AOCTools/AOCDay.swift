@@ -6,7 +6,7 @@ public protocol AOCDay {
     var part1Expected: Int { get }
     var part2Expected: Int { get }
     
-    func parseInput(rawString: String)
+    func parseInput()
     func solveDay()
 
     func solvePart1() -> Int
@@ -15,6 +15,8 @@ public protocol AOCDay {
 
 public extension AOCDay {
     func solveDay() {
+        parseInput()
+        
         print("Day \(dayNum):")
 
         // part 1

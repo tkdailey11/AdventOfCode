@@ -7,10 +7,12 @@
 
 import Foundation
 import AOCTools
-import AOC2023
+//import AOC2023
+import AOC2024
 
 let years = [
-    AOC2023.getyear()
+//    AOC2023.getyear(),
+    AOC2024.getyear(),
 ]
 
 for year in years {

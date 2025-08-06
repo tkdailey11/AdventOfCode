@@ -22,6 +22,6 @@ public class Day01: AOCDay {
         0
     }
 
-    public func parseInput(rawString _: String) {
+    public func parseInput() {
     }
 }
