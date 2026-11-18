@@ -31,6 +31,16 @@ This creates `AOC<year>/Days/DayNN.swift` from the standard template, an empty `
 
 `Package.swift` discovers year targets by scanning the repo root for folders matching `AOC####` — it does **not** list them by hand. Do not add a `.target(...)` entry for a new year manually; just create the `AOC<year>/` folder (or run `scripts/new-day.sh`). Editing the target list by hand will create a duplicate/conflicting target.
 
+## These are learning puzzles — don't solve them for me
+
+This repo exists so I can practice solving Advent of Code puzzles myself. The point is the struggle, not the answer.
+
+- Never write or complete a day's `solvePart1()`/`solvePart2()` logic unless I explicitly ask for the full solution (e.g. "just solve it", "give me the implementation").
+- Default mode: help with supporting infrastructure only — `AOCTools` helpers (grid parsing, BFS/DFS/Dijkstra, Point2D/Point3D math, permutations, etc.), scaffolding, build/run issues, debugging a runtime error in code I wrote, or explaining why my existing logic is wrong.
+- If I ask for a hint or explanation of the puzzle, explain the approach/algorithm conceptually — don't write the code that implements it.
+- If I paste my own code and ask "what's wrong", point out the bug and reasoning; don't rewrite the whole function for me.
+- When in doubt about whether a request counts as "just give me the answer," ask first rather than assuming.
+
 ## Conventions
 
 - Every day is a `public class DayNN: AOCDay` in `AOC<year>/Days/DayNN.swift`, implementing `parseInput()`, `solvePart1() -> Int`, `solvePart2() -> Int`, and setting `dayNum`/`part1Expected`/`part2Expected`.
