@@ -24,9 +24,13 @@ Year targets are discovered automatically by `Package.swift` (it scans for folde
 ## Running
 
 ```sh
-swift run AdventOfCode     # builds and runs every registered year/day
-swift build                # build only
+swift run AdventOfCode                          # every registered year/day
+swift run AdventOfCode -- --year 2024           # only 2024
+swift run AdventOfCode -- --year 2024 --day 2   # only 2024 day 2
+swift build                                     # build only
 ```
+
+`--day`/`-d` requires `--year`/`-y` (there's no cross-year "day 2 of everything" mode). Run `swift run AdventOfCode -- --help` for the full flag list.
 
 You can also open `Package.swift` directly in Xcode for the full IDE/debugger experience — no `.xcodeproj` needed.
 
