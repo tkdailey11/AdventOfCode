@@ -23,7 +23,7 @@ class Day03: AOCDay {
     }
 
     public func parseInput() {
-        let contents = AOCTools.getRawInputStringForDay(dayNum, in: Bundle(for: Day03.self))
+        let contents = AOCTools.getRawInputStringForDay(dayNum, in: Bundle.module)
         contents.split(separator: "\n").forEach{ line in
             
         }
