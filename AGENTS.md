@@ -1,0 +1,59 @@
+# AGENTS.md
+
+Instructions for AI coding agents working in this repo. See `README.md` for the human-facing overview.
+
+## Project summary
+
+Personal Advent of Code solutions. Swift package, one library target per year (`AOC2023`, `AOC2024`, ...), a shared `AOCTools` library, and an `AdventOfCode` executable that runs them.
+
+## Setup / build / run
+
+```sh
+swift build                                     # compile everything
+swift run AdventOfCode                          # run every registered year/day
+swift run AdventOfCode -- --year 2024           # run one year
+swift run AdventOfCode -- --year 2024 --day 2   # run one day
+```
+
+Requires Swift 6.1+ (Xcode 16.4+) and macOS 15+. No test suite exists — see "Verifying changes" below.
+
+## Adding a day or year
+
+Always use the scaffolding script rather than hand-creating files or editing `Package.swift`:
+
+```sh
+scripts/new-day.sh <year> <day>
+```
+
+This creates `AOC<year>/Days/DayNN.swift` from the standard template, an empty `Input/DayNN.txt`, and registers the day in that year's `getyear()`. If the year doesn't exist yet, it bootstraps the folder and registers `import AOC<year>` / `AOC<year>.getyear()` in `AdventOfCode/main.swift`. It refuses to overwrite an existing day file.
+
+## Important: `Package.swift` is dynamic
+
+`Package.swift` discovers year targets by scanning the repo root for folders matching `AOC####` — it does **not** list them by hand. Do not add a `.target(...)` entry for a new year manually; just create the `AOC<year>/` folder (or run `scripts/new-day.sh`). Editing the target list by hand will create a duplicate/conflicting target.
+
+## Conventions
+
+- Every day is a `public class DayNN: AOCDay` in `AOC<year>/Days/DayNN.swift`, implementing `parseInput()`, `solvePart1() -> Int`, `solvePart2() -> Int`, and setting `dayNum`/`part1Expected`/`part2Expected`.
+- `part1Expected`/`part2Expected` default to `0` for unsolved stubs. A `0` match is **not** reliable proof of correctness — some real puzzle answers are legitimately `0`. Treat it as a soft regression check, not a correctness guarantee.
+- Puzzle input is loaded via `AOCTools.getRawInputStringForDay(dayNum, in: Bundle.module)` — always `Bundle.module` (the SPM-generated resource bundle for that year's target), never `Bundle(for:)`.
+- Before writing a new helper (grid parsing, BFS/DFS/Dijkstra, Point2D/Point3D math, permutations, etc.), check `AOCTools` first — see the "AOCTools" section of `README.md` for what already exists.
+
+## Security — AoC session cookie
+
+`scripts/fetch-input.sh` reads an AoC session cookie from `$AOC_SESSION` or `~/.config/aoc/session`, both **outside** this repo. Never:
+- ask the user to paste their session cookie into a chat/terminal transcript you'll retain,
+- hardcode a session value in any tracked file,
+- or write the cookie anywhere inside the repo (including untracked scratch files you might create while debugging).
+
+It is equivalent to a password for the user's Advent of Code account.
+
+## Verifying changes
+
+There's no automated test suite. After changing solver logic or shared tooling:
+
+```sh
+swift build
+swift run AdventOfCode -- --year <year> --day <day>
+```
+
+Compare the printed result against `part1Expected`/`part2Expected`. Update those fields once you know the correct answers for a newly-solved day so future runs catch regressions.

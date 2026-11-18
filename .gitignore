@@ -47,6 +47,9 @@ playground.xcworkspace
 # hence it is not needed unless you have added a package configuration file to your project
 # .swiftpm
 
+# Advent of Code puzzle inputs are unique per account — AoC asks that these not be shared publicly.
+AOC*/Input/*.txt
+
 .build/
 
 # CocoaPods
