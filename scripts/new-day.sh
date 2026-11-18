@@ -108,7 +108,7 @@ echo
 echo "Registered Day${day_padded} in ${year_file}"
 echo
 echo "Next steps:"
-echo "  1. Paste your puzzle input into ${input_file}"
+echo "  1. scripts/fetch-input.sh ${year} ${day}   (or paste your puzzle input into ${input_file} manually)"
 echo "  2. Fill in parseInput/solvePart1/solvePart2 in ${day_file}"
 echo "  3. Set part1Expected/part2Expected once you know the right answers"
 echo "  4. swift run AdventOfCode"

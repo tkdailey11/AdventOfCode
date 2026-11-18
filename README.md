@@ -11,7 +11,8 @@ AOC2023/, AOC2024/    one target per year
   <Year>.swift          getyear() — registers that year's days
   Days/DayNN.swift       one AOCDay per puzzle day
   Input/DayNN.txt        puzzle input for that day
-scripts/new-day.sh   scaffolds a new day (and year, if needed)
+scripts/new-day.sh      scaffolds a new day (and year, if needed)
+scripts/fetch-input.sh  downloads your puzzle input for a day
 ```
 
 Year targets are discovered automatically by `Package.swift` (it scans for folders matching `AOC####`), so adding a year never requires editing `Package.swift` by hand.
@@ -54,9 +55,22 @@ scripts/new-day.sh <year> <day>
 This creates `Days/DayNN.swift` from a template implementing `AOCDay`, an empty `Input/DayNN.txt` for you to paste your puzzle input into, and registers the day in that year's `getyear()`. It refuses to run if the day already exists, so it won't overwrite work.
 
 After running it:
-1. Paste your puzzle input into the generated `Input/DayNN.txt`.
+1. `scripts/fetch-input.sh <year> <day>` (see below) or paste your puzzle input manually into the generated `Input/DayNN.txt`.
 2. Implement `parseInput`, `solvePart1`, and `solvePart2` in the generated `Days/DayNN.swift`.
 3. Fill in `part1Expected`/`part2Expected` once you know the correct answers, so future runs flag regressions.
+
+## Fetching your puzzle input
+
+```sh
+scripts/fetch-input.sh <year> <day> [--force]
+```
+
+Puzzle inputs are unique per account, so this needs your AoC session cookie:
+
+1. Log into https://adventofcode.com, open your browser's dev tools, and copy the value of the `session` cookie.
+2. Store it somewhere **outside the repo** — either `export AOC_SESSION=<value>` or save it to `~/.config/aoc/session`. Never commit this value; it grants full access to your AoC account.
+
+The script refuses to overwrite a non-empty `Input/DayNN.txt` unless you pass `--force`, and identifies itself via `User-Agent` per [AoC's automation etiquette](https://adventofcode.com/about) so it doesn't look like anonymous scraping.
 
 ## AOCTools
 
