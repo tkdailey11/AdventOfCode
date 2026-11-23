@@ -17,7 +17,7 @@ public extension AOCDay {
     func solveDay() {
         parseInput()
         
-        print("Day \(dayNum):")
+        print("Day \(dayNum)\(AOCConfig.useSample ? " (sample)" : ""):")
 
         // part 1
         var startTime = mach_absolute_time()
@@ -28,7 +28,7 @@ public extension AOCDay {
 
         print(" -> Part 1: \(result1). Solved in \(formattedDuration) seconds")
 
-        if part1Expected != result1 {
+        if !AOCConfig.useSample, part1Expected != result1 {
             print(" -> ⛔️ Part 1 expected result is: \(part1Expected).")
         }
 
@@ -41,7 +41,7 @@ public extension AOCDay {
 
         print(" -> Part 2: \(result2). Solved in \(formattedDuration) seconds")
 
-        if part2Expected != result2 {
+        if !AOCConfig.useSample, part2Expected != result2 {
             print(" -> ⛔️ Part 2 expected result is: \(part2Expected).")
         }
     }

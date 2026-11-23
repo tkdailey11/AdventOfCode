@@ -20,6 +20,7 @@ let allYears = [
 struct CLIOptions {
     var year: Int?
     var day: Int?
+    var sample = false
 }
 
 func printUsageAndExit(_ message: String? = nil) -> Never {
@@ -27,10 +28,11 @@ func printUsageAndExit(_ message: String? = nil) -> Never {
         print("⛔️ \(message)")
     }
     print("""
-    Usage: AdventOfCode [--year YYYY [--day N]]
+    Usage: AdventOfCode [--year YYYY [--day N]] [--sample]
 
       --year, -y   Only solve this year (default: all registered years)
       --day, -d    Only solve this day within --year (default: all days)
+      --sample, -s Use DayNNSample.txt inputs and skip expected-answer checks
       --help, -h   Show this message
     """)
     exit(message == nil ? 0 : 1)
@@ -56,6 +58,8 @@ func parseArguments(_ arguments: [String]) -> CLIOptions {
                 printUsageAndExit("Missing or invalid value for \(argument)")
             }
             options.day = day
+        case "--sample", "-s":
+            options.sample = true
         case "--help", "-h":
             printUsageAndExit()
         default:
@@ -83,6 +87,8 @@ if let yearNum = options.year {
 } else {
     yearsToRun = allYears
 }
+
+AOCConfig.useSample = options.sample
 
 for year in yearsToRun {
     print("Solving Year \(year.yearNum)")
