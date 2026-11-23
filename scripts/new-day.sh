@@ -83,6 +83,8 @@ public class Day${day_padded}: AOCDay {
     public var dayNum: Int = ${day}
     public var part1Expected: Int = Int.min
     public var part2Expected: Int = Int.min
+    public var part1ExpectedSample: Int = Int.min
+    public var part2ExpectedSample: Int = Int.min
 
     public func parseInput() {
         let contents = AOCTools.getRawInputStringForDay(dayNum, in: Bundle.module)
@@ -112,5 +114,5 @@ echo
 echo "Next steps:"
 echo "  1. scripts/fetch-input.sh ${year} ${day}   (or paste your puzzle input into ${input_file} manually)"
 echo "  2. Fill in parseInput/solvePart1/solvePart2 in ${day_file}"
-echo "  3. Set part1Expected/part2Expected once you know the right answers"
+echo "  3. Set part1Expected/part2Expected (and the *Sample variants) once you know the right answers"
 echo "  4. swift run AdventOfCode"

@@ -57,7 +57,7 @@ This creates `Days/DayNN.swift` from a template implementing `AOCDay`, an empty 
 After running it:
 1. `scripts/fetch-input.sh <year> <day>` (see below) or paste your puzzle input manually into the generated `Input/DayNN.txt`.
 2. Implement `parseInput`, `solvePart1`, and `solvePart2` in the generated `Days/DayNN.swift`.
-3. Fill in `part1Expected`/`part2Expected` once you know the correct answers, so future runs flag regressions.
+3. Fill in `part1Expected`/`part2Expected` once you know the correct answers, so future runs flag regressions. Optionally fill in `part1ExpectedSample`/`part2ExpectedSample` too, which are checked when you run with `--sample`.
 
 ## Fetching your puzzle input
 

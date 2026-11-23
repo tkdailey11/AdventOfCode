@@ -5,6 +5,9 @@ public protocol AOCDay {
     var dayNum: Int { get }
     var part1Expected: Int { get }
     var part2Expected: Int { get }
+    /// Expected answers when running with `--sample`. `Int.min` means "unknown": the check is skipped.
+    var part1ExpectedSample: Int { get }
+    var part2ExpectedSample: Int { get }
     
     func parseInput()
     func solveDay()
@@ -14,6 +17,9 @@ public protocol AOCDay {
 }
 
 public extension AOCDay {
+    var part1ExpectedSample: Int { Int.min }
+    var part2ExpectedSample: Int { Int.min }
+
     func solveDay() {
         parseInput()
         
@@ -28,8 +34,9 @@ public extension AOCDay {
 
         print(" -> Part 1: \(result1). Solved in \(formattedDuration) seconds")
 
-        if !AOCConfig.useSample, part1Expected != result1 {
-            print(" -> ⛔️ Part 1 expected result is: \(part1Expected).")
+        let expected1 = AOCConfig.useSample ? part1ExpectedSample : part1Expected
+        if !(AOCConfig.useSample && expected1 == Int.min), expected1 != result1 {
+            print(" -> ⛔️ Part 1 expected result is: \(expected1).")
         }
 
         // part 2
@@ -41,8 +48,9 @@ public extension AOCDay {
 
         print(" -> Part 2: \(result2). Solved in \(formattedDuration) seconds")
 
-        if !AOCConfig.useSample, part2Expected != result2 {
-            print(" -> ⛔️ Part 2 expected result is: \(part2Expected).")
+        let expected2 = AOCConfig.useSample ? part2ExpectedSample : part2Expected
+        if !(AOCConfig.useSample && expected2 == Int.min), expected2 != result2 {
+            print(" -> ⛔️ Part 2 expected result is: \(expected2).")
         }
     }
 }
