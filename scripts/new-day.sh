@@ -34,6 +34,7 @@ year_dir="AOC${year}"
 year_file="${year_dir}/${year_dir}.swift"
 day_file="${year_dir}/Days/Day${day_padded}.swift"
 input_file="${year_dir}/Input/Day${day_padded}.txt"
+sample_file="${year_dir}/Input/Day${day_padded}Sample.txt"
 
 # insert_after <exact line> <text> <file> — insert a line of text after the first line equal to <exact line>
 insert_after() {
@@ -66,7 +67,7 @@ public func getyear() -> AOCYear {
 EOF
 
     insert_after "import AOCTools" "import AOC${year}" AdventOfCode/main.swift
-    insert_after "let years = [" "    AOC${year}.getyear()," AdventOfCode/main.swift
+    insert_after "let allYears = [" "    AOC${year}.getyear()," AdventOfCode/main.swift
 fi
 
 if [[ -f "$day_file" ]]; then
@@ -97,13 +98,14 @@ public class Day${day_padded}: AOCDay {
 }
 EOF
 
-touch "$input_file"
+touch "$input_file" "$sample_file"
 
 insert_before "    ])" "        Day${day_padded}()," "$year_file"
 
 echo "Created:"
 echo "  ${day_file}"
 echo "  ${input_file} (empty — paste your puzzle input here)"
+echo "  ${sample_file} (empty — paste the puzzle's example input here)"
 echo
 echo "Registered Day${day_padded} in ${year_file}"
 echo
