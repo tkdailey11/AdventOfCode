@@ -80,8 +80,8 @@ import AOCTools
 
 public class Day${day_padded}: AOCDay {
     public var dayNum: Int = ${day}
-    public var part1Expected: Int = 0
-    public var part2Expected: Int = 0
+    public var part1Expected: Int = Int.min
+    public var part2Expected: Int = Int.min
 
     public func parseInput() {
         let contents = AOCTools.getRawInputStringForDay(dayNum, in: Bundle.module)

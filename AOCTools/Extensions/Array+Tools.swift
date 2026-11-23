@@ -162,3 +162,24 @@ public extension Array {
         return n
     }
 }
+
+public extension Collection {
+    /// Splits into consecutive chunks of `size`; the last chunk may be shorter.
+    /// Returns an empty array if `size` is not positive.
+    func chunked(into size: Int) -> [[Element]] {
+        guard size > 0 else {
+            return []
+        }
+
+        var result: [[Element]] = []
+        var start = startIndex
+
+        while start != endIndex {
+            let end = index(start, offsetBy: size, limitedBy: endIndex) ?? endIndex
+            result.append(Array(self[start..<end]))
+            start = end
+        }
+
+        return result
+    }
+}

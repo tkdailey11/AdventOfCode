@@ -7,11 +7,13 @@
 
 import Foundation
 import AOCTools
+import AOC2022
 //import AOC2023
 import AOC2024
 
 let allYears = [
 //    AOC2023.getyear(),
+    AOC2022.getyear(),
     AOC2024.getyear(),
 ]
 

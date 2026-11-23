@@ -19,7 +19,7 @@ Year targets are discovered automatically by `Package.swift` (it scans for folde
 
 ## Requirements
 
-- Swift 6.1+ toolchain (Xcode 16.4+)
+- Swift 6.0+ toolchain (Xcode 16+)
 - macOS 15+
 
 ## Running

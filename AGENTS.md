@@ -15,7 +15,7 @@ swift run AdventOfCode -- --year 2024           # run one year
 swift run AdventOfCode -- --year 2024 --day 2   # run one day
 ```
 
-Requires Swift 6.1+ (Xcode 16.4+) and macOS 15+. No test suite exists — see "Verifying changes" below.
+Requires Swift 6.0+ (Xcode 16+) and macOS 15+. No test suite exists — see "Verifying changes" below.
 
 ## Adding a day or year
 
@@ -44,7 +44,7 @@ This repo exists so I can practice solving Advent of Code puzzles myself. The po
 ## Conventions
 
 - Every day is a `public class DayNN: AOCDay` in `AOC<year>/Days/DayNN.swift`, implementing `parseInput()`, `solvePart1() -> Int`, `solvePart2() -> Int`, and setting `dayNum`/`part1Expected`/`part2Expected`.
-- `part1Expected`/`part2Expected` default to `0` for unsolved stubs. A `0` match is **not** reliable proof of correctness — some real puzzle answers are legitimately `0`. Treat it as a soft regression check, not a correctness guarantee.
+- `part1Expected`/`part2Expected` default to `Int.min` for unsolved stubs (a sentinel no real puzzle answer will match, so an unsolved day always reports a mismatch). Note that older stubs created before this change may still default to `0`.
 - Puzzle input is loaded via `AOCTools.getRawInputStringForDay(dayNum, in: Bundle.module)` — always `Bundle.module` (the SPM-generated resource bundle for that year's target), never `Bundle(for:)`.
 - Before writing a new helper (grid parsing, BFS/DFS/Dijkstra, Point2D/Point3D math, permutations, etc.), check `AOCTools` first — see the "AOCTools" section of `README.md` for what already exists.
 
