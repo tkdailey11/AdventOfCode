@@ -28,6 +28,7 @@ public extension AOCDay {
     func solveDay() {
         parseInput()
         
+        let inputKind = AOCConfig.useSample ? "sample " : ""
         print("Day \(dayNum)\(AOCConfig.useSample ? " (sample)" : ""):")
 
         // part 1
@@ -44,8 +45,8 @@ public extension AOCDay {
             if expected1 != result1 {
                 print(" -> ⛔️ Part 1 expected result is: \(expected1).")
             }
-        } else if !AOCConfig.useSample {
-            print(" -> ⛔️ Part 1 has no expected result set.")
+        } else {
+            print(" -> ⚠️ Part 1 has no expected \(inputKind)result set.")
         }
 
         // part 2
@@ -62,8 +63,8 @@ public extension AOCDay {
             if expected2 != result2 {
                 print(" -> ⛔️ Part 2 expected result is: \(expected2).")
             }
-        } else if !AOCConfig.useSample {
-            print(" -> ⛔️ Part 2 has no expected result set.")
+        } else {
+            print(" -> ⚠️ Part 2 has no expected \(inputKind)result set.")
         }
     }
 }
