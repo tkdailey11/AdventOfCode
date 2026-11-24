@@ -3,9 +3,9 @@ import AOCTools
 
 public class Day04: AOCDay {
     public var dayNum: Int = 4
-    public var part1Expected: Int = 547
-    public var part2Expected: Int = 843
-    public var part2ExpectedSample = 4
+    public var part1Expected: Int? = 547
+    public var part2Expected: Int? = 843
+    public var part2ExpectedSample: Int? = 4
     
     var pairs: [(ClosedRange<Int>, ClosedRange<Int>)] = []
 

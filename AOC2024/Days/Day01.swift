@@ -10,8 +10,8 @@ import AOCTools
 
 public class Day01: AOCDay {
     public var dayNum: Int = 1
-    public var part1Expected: Int = 2285373
-    public var part2Expected: Int = 21142653
+    public var part1Expected: Int? = 2285373
+    public var part2Expected: Int? = 21142653
     
     private var column1: [Int] = []
     private var column2: [Int] = []

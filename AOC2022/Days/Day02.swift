@@ -3,8 +3,8 @@ import AOCTools
 
 public class Day02: AOCDay {
     public var dayNum: Int = 2
-    public var part1Expected: Int = 11386
-    public var part2Expected: Int = 13600
+    public var part1Expected: Int? = 11386
+    public var part2Expected: Int? = 13600
     
     enum RPS: Int {
         case rock = 1

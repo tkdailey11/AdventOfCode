@@ -11,8 +11,8 @@ import AOCTools
 class Day03: AOCDay {
 
     public var dayNum: Int = 0
-    public var part1Expected: Int = 0
-    public var part2Expected: Int = 0
+    public var part1Expected: Int? = 0
+    public var part2Expected: Int? = 0
 
     public func solvePart1() -> Int {
         0

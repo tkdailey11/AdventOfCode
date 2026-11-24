@@ -3,8 +3,8 @@ import AOCTools
 
 public class Day01: AOCDay {
     public var dayNum: Int = 1
-    public var part1Expected: Int = 69836
-    public var part2Expected: Int = 207968
+    public var part1Expected: Int? = 69836
+    public var part2Expected: Int? = 207968
     
     struct CalorieList {
         var values: [Int]

@@ -3,8 +3,8 @@ import AOCTools
 
 public class Day03: AOCDay {
     public var dayNum: Int = 3
-    public var part1Expected: Int = 7826
-    public var part2Expected: Int = 2577
+    public var part1Expected: Int? = 7826
+    public var part2Expected: Int? = 2577
 
     struct Packs {
         let pack1: Set<Int>
