@@ -7,5 +7,6 @@ public func getyear() -> AOCYear {
         Day02(),
         Day03(),
         Day04(),
+        Day05(),
     ])
 }

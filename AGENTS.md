@@ -43,8 +43,8 @@ This repo exists so I can practice solving Advent of Code puzzles myself. The po
 
 ## Conventions
 
-- Every day is a `public class DayNN: AOCDay` in `AOC<year>/Days/DayNN.swift`, implementing `parseInput()`, `solvePart1() -> Int`, `solvePart2() -> Int`, and setting `dayNum`/`part1Expected`/`part2Expected`.
-- `part1Expected`/`part2Expected` default to `Int.min` for unsolved stubs (a sentinel no real puzzle answer will match, so an unsolved day always reports a mismatch). `part1ExpectedSample`/`part2ExpectedSample` work the same way for `--sample` runs, except `Int.min` there means "unknown" and the check is skipped. Older stubs may still default to `0`.
+- Every day is a `public class DayNN: AOCDay` in `AOC<year>/Days/DayNN.swift`, implementing `parseInput()`, `solvePart1()`, `solvePart2()` (each returns `Int` or `String`; the type of `part1Expected`/`part2Expected` and their `Sample` variants must match, and the protocol infers it), and setting `dayNum`/`part1Expected`/`part2Expected`.
+- `part1Expected`/`part2Expected` default to `Int.min` (or `""` for String-answer days) for unsolved stubs (a sentinel no real puzzle answer will match, so an unsolved day always reports a mismatch). `part1ExpectedSample`/`part2ExpectedSample` work the same way for `--sample` runs, except `Int.min` there means "unknown" and the check is skipped. Older stubs may still default to `0`.
 - Puzzle input is loaded via `AOCTools.getRawInputStringForDay(dayNum, in: Bundle.module)` — always `Bundle.module` (the SPM-generated resource bundle for that year's target), never `Bundle(for:)`.
 - Before writing a new helper (grid parsing, BFS/DFS/Dijkstra, Point2D/Point3D math, permutations, etc.), check `AOCTools` first — see the "AOCTools" section of `README.md` for what already exists.
 
