@@ -182,4 +182,28 @@ public extension Collection {
 
         return result
     }
+
+    /// Every overlapping run of `size` consecutive elements, in order:
+    /// `[1, 2, 3, 4].windows(ofSize: 2)` -> `[[1, 2], [2, 3], [3, 4]]`.
+    /// Returns an empty array if `size` is not positive or is larger than the collection.
+    func windows(ofSize size: Int) -> [[Element]] {
+        guard size > 0 else {
+            return []
+        }
+
+        var result: [[Element]] = []
+        var start = startIndex
+
+        while let end = index(start, offsetBy: size, limitedBy: endIndex) {
+            result.append(Array(self[start..<end]))
+
+            if end == endIndex {
+                break
+            }
+
+            start = index(after: start)
+        }
+
+        return result
+    }
 }
