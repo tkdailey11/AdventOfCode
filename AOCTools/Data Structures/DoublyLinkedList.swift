@@ -75,6 +75,47 @@ public final class DoublyLinkedList<T>: CustomStringConvertible {
         rootNode = rootNode!.previous
     }
 
+    /// Inserts `value` so that it ends up at `index`, like `Array.insert(_:at:)`.
+    /// `index` must be in `0 ... count`; `count` appends.
+    public func insert(_ value: T, at index: Int) {
+        // insert 9 at 2 [0, 1, 2, 3] -> [0, 1, 9, 2, 3]
+
+        precondition(index >= 0 && index <= count, "Index out of range")
+
+        if index == count {
+            append(value)
+        } else if index == 0 {
+            prepend(value)
+        } else {
+            let nextNode = node(at: index)
+            let previousNode = nextNode.previous!
+
+            let newNode = Node(value: value, previous: previousNode, next: nextNode)
+
+            previousNode.next = newNode
+            nextNode.previous = newNode
+
+            count += 1
+        }
+    }
+
+    /// The node at `index`, walking from whichever end is closer. `index` must be in `0 ..< count`.
+    private func node(at index: Int) -> Node {
+        var currentNode = rootNode!
+
+        if index <= count / 2 {
+            for _ in 0 ..< index {
+                currentNode = currentNode.next!
+            }
+        } else {
+            for _ in 0 ..< count - index {
+                currentNode = currentNode.previous!
+            }
+        }
+
+        return currentNode
+    }
+
     public func rotate(steps: Int) {
         guard let root = rootNode, count > 1 else {
             return
