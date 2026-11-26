@@ -206,4 +206,25 @@ public extension Collection {
 
         return result
     }
+
+    /// Like `windows(ofSize:)`, but each window is built only when it is asked for, so stopping
+    /// early (`first(where:)`, `firstIndex(where:)`, `prefix`, ...) never builds the rest.
+    /// Because it is a `LazySequence`, chained `map`/`filter` calls stay lazy too.
+    /// Yields nothing if `size` is not positive or is larger than the collection.
+    func lazyWindows(ofSize size: Int) -> LazySequence<UnfoldSequence<[Element], Index?>> {
+        let firstStart: Index? = size > 0 ? startIndex : nil
+
+        return sequence(state: firstStart) { state in
+            guard let start = state,
+                  let end = index(start, offsetBy: size, limitedBy: endIndex) else {
+                state = nil
+                return nil
+            }
+
+            state = end == endIndex ? nil : index(after: start)
+
+            return Array(self[start..<end])
+        }
+        .lazy
+    }
 }
