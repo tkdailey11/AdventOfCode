@@ -6,24 +6,38 @@
 //
 
 public final class DoublyLinkedList<T>: CustomStringConvertible {
-    private final class Node<S> {
-        var value: S
+    private final class Node {
+        var value: T
 
         var previous: Node?
         var next: Node?
 
-        init(value: S) {
+        init(value: T) {
             self.value = value
         }
 
-        init(value: S, previous: Node, next: Node) {
+        init(value: T, previous: Node, next: Node) {
             self.value = value
             self.previous = previous
             self.next = next
         }
     }
 
-    private var rootNode: Node<T>?
+    private var rootNode: Node?
+
+    public private(set) var count = 0
+
+    public var isEmpty: Bool {
+        count == 0
+    }
+
+    public var first: T? {
+        rootNode?.value
+    }
+
+    public var last: T? {
+        rootNode?.previous?.value
+    }
 
     public init(_ values: [T] = []) {
         for value in values {
@@ -48,53 +62,72 @@ public final class DoublyLinkedList<T>: CustomStringConvertible {
 
             rootNode = newNode
         }
+
+        count += 1
+    }
+
+    public func prepend(_ value: T) {
+        // [0, 1, 2, 3] -> [4, 0, 1, 2, 3]
+
+        append(value)
+
+        // The new node is the last one in the ring; make it the root.
+        rootNode = rootNode!.previous
     }
 
     public func rotate(steps: Int) {
-        guard rootNode != nil else {
+        guard let root = rootNode, count > 1 else {
             return
         }
 
+        // Wrap around so we never walk more than half the ring.
+        var steps = steps % count
+        if steps > count / 2 {
+            steps -= count
+        } else if steps < -(count / 2) {
+            steps += count
+        }
+
+        var currentNode = root
+
         if steps > 0 {
             // rotate 1 [0, 1, 2, 3] -> [3, 0, 1, 2]
-            var currentNode: Node = rootNode!
-
             for _ in 0 ..< steps {
                 currentNode = currentNode.previous!
             }
-
-            rootNode = currentNode
         } else if steps < 0 {
-            // rotate 1 [0, 1, 2, 3] -> [1, 2, 3, 0]
-            var currentNode: Node = rootNode!
-
-            for _ in 0 ..< abs(steps) {
+            // rotate -1 [0, 1, 2, 3] -> [1, 2, 3, 0]
+            for _ in 0 ..< -steps {
                 currentNode = currentNode.next!
             }
-
-            rootNode = currentNode
         }
+
+        rootNode = currentNode
     }
 
     public func popLast() -> T? {
         // [0, 1, 2, 3] -> [0, 1, 2]
 
-        guard rootNode != nil else {
+        guard let root = rootNode else {
             return nil
         }
 
-        let value = rootNode!.previous!.value
+        let lastNode = root.previous!
 
-        if rootNode! === rootNode!.previous {
+        if lastNode === root {
             rootNode = nil
         } else {
-            rootNode!.previous!.previous!.next = rootNode
-            rootNode!.previous = rootNode!.previous!.previous!
+            let newLastNode = lastNode.previous!
+
+            newLastNode.next = root
+            root.previous = newLastNode
         }
 
-        return value
+        count -= 1
+
+        return lastNode.value
     }
-    
+
     public func popFirst() -> T? {
         // [0, 1, 2, 3] -> [1, 2, 3]
 
@@ -114,22 +147,22 @@ public final class DoublyLinkedList<T>: CustomStringConvertible {
             rootNode = newRoot
         }
 
+        count -= 1
+
         return oldRoot.value
     }
 
     public func popFirst(_ n: Int) -> [T] {
-        guard rootNode != nil else {
-            return []
-        }
-        
         var result: [T] = []
-        
-        for _ in 0 ..< n {
-            if let val = popFirst() {
-                result.append(val)
+
+        for _ in 0 ..< max(n, 0) {
+            guard let value = popFirst() else {
+                break
             }
+
+            result.append(value)
         }
-        
+
         return result
     }
 
@@ -138,14 +171,12 @@ public final class DoublyLinkedList<T>: CustomStringConvertible {
             return "[]"
         }
 
-        var result = "["
+        var result = "[\(rootNode.value)"
 
-        result += "\(rootNode.value)"
-
-        var currentNode: Node = rootNode.next!
+        var currentNode = rootNode.next!
 
         while currentNode !== rootNode {
-            result += ", " + "\(currentNode.value)"
+            result += ", \(currentNode.value)"
 
             currentNode = currentNode.next!
         }
