@@ -75,6 +75,35 @@ public final class DoublyLinkedList<T>: CustomStringConvertible {
         rootNode = rootNode!.previous
     }
 
+    /// Moves all of `other`'s elements onto the end of this list in O(1). `other` is left empty.
+    public func concat(_ other: DoublyLinkedList<T>) {
+        // [0, 1] concat [2, 3] -> [0, 1, 2, 3], other -> []
+
+        precondition(other !== self, "Cannot concat a list with itself")
+
+        guard let otherRoot = other.rootNode else {
+            return
+        }
+
+        if let root = rootNode {
+            let lastNode = root.previous!
+            let otherLastNode = otherRoot.previous!
+
+            lastNode.next = otherRoot
+            otherRoot.previous = lastNode
+
+            otherLastNode.next = root
+            root.previous = otherLastNode
+        } else {
+            rootNode = otherRoot
+        }
+
+        count += other.count
+
+        other.rootNode = nil
+        other.count = 0
+    }
+
     /// Inserts `value` so that it ends up at `index`, like `Array.insert(_:at:)`.
     /// `index` must be in `0 ... count`; `count` appends.
     public func insert(_ value: T, at index: Int) {
@@ -97,6 +126,43 @@ public final class DoublyLinkedList<T>: CustomStringConvertible {
 
             count += 1
         }
+    }
+
+    /// Moves all of `other`'s elements into this list so the first one ends up at `index`.
+    /// `index` must be in `0 ... count`. Like `concat`, `other` is left empty.
+    public func insert(contentsOf other: DoublyLinkedList<T>, at index: Int) {
+        // insert [8, 9] at 2 into [0, 1, 2, 3] -> [0, 1, 8, 9, 2, 3]
+
+        precondition(other !== self, "Cannot insert a list into itself")
+        precondition(index >= 0 && index <= count, "Index out of range")
+
+        guard let otherRoot = other.rootNode else {
+            return
+        }
+
+        if index == count {
+            concat(other)
+            return
+        }
+
+        let nextNode = node(at: index)
+        let previousNode = nextNode.previous!
+        let otherLastNode = otherRoot.previous!
+
+        previousNode.next = otherRoot
+        otherRoot.previous = previousNode
+
+        otherLastNode.next = nextNode
+        nextNode.previous = otherLastNode
+
+        if index == 0 {
+            rootNode = otherRoot
+        }
+
+        count += other.count
+
+        other.rootNode = nil
+        other.count = 0
     }
 
     /// The node at `index`, walking from whichever end is closer. `index` must be in `0 ..< count`.
