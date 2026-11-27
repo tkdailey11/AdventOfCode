@@ -1,0 +1,77 @@
+//
+//  Tree.swift
+//  AdventOfCode
+//
+//  Created by Tyler Dailey on 11/27/26.
+//
+
+internal import Collections
+
+public class Tree<T> {
+    public class TreeNode {
+        public var value: T
+        public private(set) var children: [TreeNode] = []   // public getter, private setter
+        public private(set) weak var parent: TreeNode?
+        
+        public var isRoot: Bool { parent == nil }
+        public var isLeaf: Bool { children.isEmpty }
+        
+        public init(_ value: T) {
+            self.value = value
+        }
+        
+        public func addChild(_ child: TreeNode) {
+            child.parent = self
+            children.append(child)
+        }
+    }
+    
+    let root: TreeNode
+    
+    public init(_ rootValue: T) {
+        self.root = TreeNode(rootValue)
+    }
+    
+    /// Visits each node before its children, children left to right.
+    public func forEachDepthFirstPreOrder(_ body: (TreeNode) throws -> ()) rethrows {
+        var stack = [root]
+
+        while let node = stack.popLast() {
+            try body(node)
+
+            // Pushed reversed so the first child is popped (visited) first.
+            stack.append(contentsOf: node.children.reversed())
+        }
+    }
+
+    /// Visits each node after all of its children, children left to right.
+    public func forEachDepthFirstPostOrder(_ body: (TreeNode) throws -> ()) rethrows {
+        // `true` means the node's children have already been pushed and visited.
+        var stack: [(node: TreeNode, childrenDone: Bool)] = [(root, false)]
+
+        while let (node, childrenDone) = stack.popLast() {
+            if childrenDone {
+                try body(node)
+            } else {
+                stack.append((node, true))
+
+                for child in node.children.reversed() {
+                    stack.append((child, false))
+                }
+            }
+        }
+    }
+
+    /// Visits the root, then all nodes one level down, then the next level, and so on,
+    /// children left to right within a level.
+    public func forEachBreadthFirst(_ body: (TreeNode) throws -> ()) rethrows {
+        // A Deque gives O(1) removal from the front; Array.removeFirst() is O(n).
+        var queue: Deque<TreeNode> = [root]
+
+        while let node = queue.popFirst() {
+            try body(node)
+
+            queue.append(contentsOf: node.children)
+        }
+    }
+}
