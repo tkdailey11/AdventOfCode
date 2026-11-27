@@ -24,9 +24,41 @@ public class Tree<T> {
             child.parent = self
             children.append(child)
         }
+
+        /// Folds this node's whole subtree into one value, bottom-up. `combine` is called once per
+        /// node with that node's value and the results already computed for its children
+        /// (in child order, empty for a leaf); the result for this node is what's returned.
+        public func reduce<Result>(
+            _ combine: (_ value: T, _ childResults: [Result]) throws -> Result
+        ) rethrows -> Result {
+            // Iterative post-order walk (no recursion, so deep trees can't overflow the stack).
+            // Every finished subtree leaves exactly one entry in `results`, so when a node is
+            // ready, its children's results are the last `children.count` entries, in order.
+            var results: [Result] = []
+
+            // `childrenDone` means the node's children have already been pushed and processed.
+            var stack: [(node: TreeNode, childrenDone: Bool)] = [(self, false)]
+
+            while let (node, childrenDone) = stack.popLast() {
+                if childrenDone {
+                    let childResults = Array(results.suffix(node.children.count))
+                    results.removeLast(node.children.count)
+
+                    results.append(try combine(node.value, childResults))
+                } else {
+                    stack.append((node, true))
+
+                    for child in node.children.reversed() {
+                        stack.append((child, false))
+                    }
+                }
+            }
+
+            return results.removeLast()
+        }
     }
     
-    let root: TreeNode
+    public let root: TreeNode
     
     public init(_ rootValue: T) {
         self.root = TreeNode(rootValue)
