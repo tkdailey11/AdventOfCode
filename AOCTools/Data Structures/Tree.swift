@@ -7,8 +7,8 @@
 
 internal import Collections
 
-public class Tree<T> {
-    public class TreeNode {
+public class Tree<T>: CustomStringConvertible {
+    public class TreeNode: CustomStringConvertible {
         public var value: T
         public private(set) var children: [TreeNode] = []   // public getter, private setter
         public private(set) weak var parent: TreeNode?
@@ -24,7 +24,11 @@ public class Tree<T> {
             child.parent = self
             children.append(child)
         }
-
+        
+        public func addChildWithValue(_ value: T) {
+            addChild(TreeNode(value))
+        }
+        
         /// Folds this node's whole subtree into one value, bottom-up. `combine` is called once per
         /// node with that node's value and the results already computed for its children
         /// (in child order, empty for a leaf); the result for this node is what's returned.
@@ -55,6 +59,10 @@ public class Tree<T> {
             }
 
             return results.removeLast()
+        }
+        
+        public var description: String {
+            return "\(value)"
         }
     }
     
@@ -105,5 +113,23 @@ public class Tree<T> {
 
             queue.append(contentsOf: node.children)
         }
+    }
+    
+    /// An indented outline, one node per line, in the style of the AoC 2022 day 7 example:
+    /// ```
+    /// - /
+    ///   - a
+    ///     - e
+    ///   - b
+    /// ```
+    public var description: String {
+        let lines = root.reduce { value, childResults -> [String] in
+            // This node's line, then every line from each child's subtree pushed one level in.
+            ["- \(value)"] + childResults.flatMap { childLines in
+                childLines.map { "  " + $0 }
+            }
+        }
+
+        return lines.joined(separator: "\n")
     }
 }
